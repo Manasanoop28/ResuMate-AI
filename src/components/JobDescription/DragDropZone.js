@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DragDropZone = ({ selectedRole, setSelectedRole, selectedSkills, setSelectedSkills, selectedLocation, setSelectedLocation }) => {
+const DragDropZone = ({ selectedRole, setSelectedRole, selectedSkills, setSelectedSkills, selectedEducation, setSelectedEducation, selectedLocation, setSelectedLocation, onClear }) => {
 
     // ... drag handlers handleDragOver, handleDragEnter, handleDragLeave stay same ...
     const handleDragOver = (e) => {
@@ -33,6 +33,11 @@ const DragDropZone = ({ selectedRole, setSelectedRole, selectedSkills, setSelect
                     if (prev.find(s => s.label === label)) return prev;
                     return [...prev, { id: Date.now(), label }];
                 });
+            } else if (type === 'education') {
+                setSelectedEducation((prev) => {
+                    if (prev.find(e => e.label === label)) return prev;
+                    return [...prev, { id: Date.now(), label }];
+                });
             } else if (type === 'location') {
                 setSelectedLocation({ id: Date.now(), label });
             }
@@ -45,17 +50,17 @@ const DragDropZone = ({ selectedRole, setSelectedRole, selectedSkills, setSelect
         setSelectedSkills(prev => prev.filter(s => s.id !== id));
     };
 
+    const removeEducation = (id) => {
+        setSelectedEducation(prev => prev.filter(e => e.id !== id));
+    };
+
     return (
         <div className="jd-card">
             <div className="card-header">
                 <div className="card-title">Create Your Own</div>
                 <span
                     style={{ cursor: 'pointer', fontSize: '13px', color: '#818cf8' }}
-                    onClick={() => {
-                        setSelectedRole(null);
-                        setSelectedSkills([]);
-                        setSelectedLocation(null);
-                    }}
+                    onClick={onClear}
                 >
                     Clear
                 </span>
@@ -102,7 +107,7 @@ const DragDropZone = ({ selectedRole, setSelectedRole, selectedSkills, setSelect
 
                     {/* Render Location */}
                     {selectedLocation && (
-                        <div className="floating-tag purple">
+                        <div className="floating-tag green">
                             Loc: {selectedLocation.label}
                             <span className="close-icon" onClick={() => setSelectedLocation(null)}>
                                 ✕
@@ -119,10 +124,20 @@ const DragDropZone = ({ selectedRole, setSelectedRole, selectedSkills, setSelect
                             </span>
                         </div>
                     ))}
+
+                    {/* Render Education */}
+                    {selectedEducation && selectedEducation.map(edu => (
+                        <div key={edu.id} className="floating-tag pink" style={{ background: 'rgba(244, 114, 182, 0.15)', color: '#f472b6', border: '1px solid rgba(244, 114, 182, 0.3)' }}>
+                            {edu.label}
+                            <span className="close-icon" onClick={() => removeEducation(edu.id)}>
+                                ✕
+                            </span>
+                        </div>
+                    ))}
                 </div>
 
                 {/* Only show center content if no items are dropped */}
-                {!selectedRole && !selectedLocation && selectedSkills.length === 0 && (
+                {!selectedRole && !selectedLocation && selectedSkills.length === 0 && (!selectedEducation || selectedEducation.length === 0) && (
                     <div className="drop-center" style={{
                         display: 'flex',
                         flexDirection: 'column',

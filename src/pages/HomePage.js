@@ -1,9 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import FeaturesSection from "../components/FeaturesSection";
+import AboutSection from "../components/AboutSection";
+import PricingSection from "../components/PricingSection";
+import ResourcesSection from "../components/ResourcesSection";
+import Footer from "../components/Footer";
+import SuccessStoriesModal from "../components/SuccessStoriesModal";
+import "./HomePage.css";
 
 function HomePage() {
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+
   const toggleDark = () => {
     document.documentElement.classList.toggle("dark");
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3 } // Trigger when 30% of the section is visible
+    );
+
+    const sections = document.querySelectorAll("section[id]");
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
+
+  const getNavLinkClass = (sectionId) => {
+    const baseClass = "text-sm font-medium transition-colors cursor-pointer";
+    const inactiveClass = "text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary";
+    const activeClass = "text-primary dark:text-primary font-bold";
+    return `${baseClass} ${activeSection === sectionId ? activeClass : inactiveClass}`;
   };
 
   return (
@@ -12,17 +49,18 @@ function HomePage() {
       <nav className="fixed w-full z-50 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
         <div className="max-w-[1600px] mx-auto px-4 md:px-6">
           <div className="flex justify-between h-20 items-center">
-            <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+            <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               <div className="bg-primary/10 dark:bg-primary/20 p-2 rounded-lg">
                 <span className="material-icons text-primary text-2xl">smart_toy</span>
               </div>
-              <span className="font-bold text-2xl tracking-tight text-slate-900 dark:text-white">HireIQ</span>
+              <span className="font-bold text-2xl tracking-tight text-slate-900 dark:text-white">ResuMate AI</span>
             </div>
             <div className="hidden md:flex space-x-8 items-center">
-              <button className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors">Features</button>
-              <button className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors">Pricing</button>
-              <button className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors">Success Stories</button>
-              <button className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors">Resources</button>
+              <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className={getNavLinkClass('about')}>About Us</button>
+              <button onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })} className={getNavLinkClass('features')}>Features</button>
+              <button onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} className={getNavLinkClass('pricing')}>Pricing</button>
+              <button onClick={() => setIsSuccessModalOpen(true)} className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors">Success Stories</button>
+              <button onClick={() => document.getElementById('resources')?.scrollIntoView({ behavior: 'smooth' })} className={getNavLinkClass('resources')}>Resources</button>
             </div>
             <div className="hidden md:flex items-center space-x-4">
               <button aria-label="Toggle Dark Mode" className="p-2 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none" onClick={toggleDark}>
@@ -46,7 +84,7 @@ function HomePage() {
       </nav>
 
       {/* Hero */}
-      <main className="relative pt-28 pb-16 lg:pt-40 lg:pb-32 overflow-hidden min-h-[calc(100vh-5rem)]">
+      <main className="relative pt-32 pb-20 lg:pt-48 lg:pb-40 overflow-hidden min-h-[calc(100vh-5rem)]">
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl dark:bg-primary/10 pointer-events-none" />
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[400px] h-[400px] bg-teal-400/10 rounded-full blur-3xl dark:bg-teal-900/20 pointer-events-none" />
 
@@ -112,50 +150,58 @@ function HomePage() {
             </div>
 
             <div className="lg:col-span-5 relative mt-12 lg:mt-0">
-              <div className="relative rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 p-2 shadow-2xl shadow-slate-200/50 dark:shadow-black/50 ring-1 ring-slate-200 dark:ring-slate-700">
-                <div className="relative overflow-hidden rounded-xl aspect-[4/3]">
-                  <div className="absolute inset-0 bg-primary/20 mix-blend-overlay z-10" />
-                  <img alt="Hero visual" className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvPO732jRzUgTH9rNIEoXfNyS0ZMf9aiZOZCPRkKD8MKd3RmcMyD0Spy319kMguAMWrFD14MKZK9rDIPvL8xnSCuybYJEboNqRUbK3R4lBcJU6zd4s2zNhv-iYRBhPatNkqeJXFcSvNvrmS5HdphIOxLD6mJc0iIBx9rYwltEfoNtvjVDKeg1OZ95a-mvNaYa_SMlAotHAkvJRaZtdRaLfV0uVLnP0Qk4aMIPrr1O_o2cDIx_vypt3tEDYhedSOeTW6BdkEtA6p54" />
+              <div className="relative w-full max-w-[85%] mx-auto">
+
+                <div className="home-illustration">
+                  {/* Hero Robot Image */}
+                  <div className="relative overflow-hidden rounded-xl w-full h-full min-h-[400px]">
+                    <div className="absolute inset-0 bg-primary/10 mix-blend-overlay z-10" />
+                    <img
+                      alt="AI Recruiter"
+                      className="hero-robot w-full h-full object-cover"
+                      src="/assets/images/hero-ai-robot.jpg"
+                    />
+                  </div>
+
                 </div>
-                <div className="absolute -top-6 -right-6 lg:-right-12 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 z-20 w-48 animate-bounce-slow">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-600 overflow-hidden">
-                      <img alt="Candidate" className="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvPO732jRzUgTH9rNIEoXfNyS0ZMf9aiZOZCPRkKD8MKd3RmcMyD0Spy319kMguAMWrFD14MKZK9rDIPvL8xnSCuybYJEboNqRUbK3R4lBcJU6zd4s2zNhv-iYRBhPatNkqeJXFcSvNvrmS5HdphIOxLD6mJc0iIBx9rYwltEfoNtvjVDKeg1OZ95a-mvNaYa_SMlAotHAkvJRaZtdRaLfV0uVLnP0Qk4aMIPrr1O_o2cDIx_vypt3tEDYhedSOeTW6BdkEtA6p54" />
-                    </div>
-                    <div className="space-y-1">
-                      <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded w-3/4" />
-                      <div className="h-2 bg-slate-100 dark:bg-slate-700 rounded w-1/2" />
-                    </div>
-                    <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center gap-1">
-                      <span className="material-icons text-primary text-sm">auto_awesome</span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Top Candidate</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute -bottom-6 -left-6 lg:-left-12 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 z-20 w-56 animate-bounce-delayed">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <span className="material-icons text-primary">analytics</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-900 dark:text-white">ATS Analysis</p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">Processing batch #402</p>
-                    </div>
-                  </div>
-                  <div className="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2 overflow-hidden">
-                    <div className="bg-primary h-2 rounded-full w-[85%]" />
-                  </div>
-                  <div className="flex justify-between mt-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-                    <span>Scanning skills...</span>
-                    <span className="text-primary">85%</span>
-                  </div>
-                </div>
+
+                {/* Subtle background glow behind the robot - No border */}
+                <div className="absolute -z-10 inset-0 bg-gradient-to-tr from-primary/30 to-purple-500/30 blur-3xl opacity-20 transform scale-110 rounded-full" />
               </div>
-              <div className="absolute -z-10 inset-0 bg-gradient-to-tr from-primary/30 to-purple-500/30 blur-3xl opacity-30 dark:opacity-20 transform rotate-6 scale-110" />
             </div>
           </div>
         </div>
       </main>
+
+      {/* About Us Section */}
+      <AboutSection />
+
+      {/* Features Section */}
+      <FeaturesSection />
+
+      {/* Pricing Section */}
+      <PricingSection />
+
+      {/* Resources Section */}
+      <ResourcesSection />
+
+      {/* Footer */}
+      <Footer />
+
+      {/* Modals */}
+      <SuccessStoriesModal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        onExplore={() => {
+          setIsSuccessModalOpen(false);
+          document.getElementById('resources')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+        onFeedback={() => {
+          setIsSuccessModalOpen(false);
+          const footer = document.querySelector('.footer');
+          if (footer) footer.scrollIntoView({ behavior: 'smooth' });
+        }}
+      />
 
       {/* Local styles for small animations */}
       <style>{`

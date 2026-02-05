@@ -1,192 +1,181 @@
 import React from 'react';
+import './ReviewJobDescription.css';
 
-const ReviewJobDescription = ({ selectedRole, selectedSkills, selectedLocation, selectedJobType, setSelectedJobType, atsScore, experienceRange, rawJD, onEdit, onSave, onAddSkill }) => {
+const ReviewJobDescription = ({ data, onEdit, onSave }) => {
+    const [showModal, setShowModal] = React.useState(false);
 
-    const roleDisplay = selectedRole ? selectedRole.label : "Not Specified";
-    const locationDisplay = selectedLocation ? selectedLocation.label : "Not Specified";
-    const skillList = selectedSkills || [];
+    const handleSaveClick = () => {
+        setShowModal(true);
+    };
 
     return (
-        <div className="review-container" style={{
-            padding: '40px',
-            height: '100%',
-            overflow: 'hidden', /* Disable scroll */
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-        }}>
-            {/* Header */}
-            <div className="review-header" style={{ marginBottom: '24px', width: '100%', maxWidth: '800px' }}>
-                <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '8px' }}>
-                    Dashboard › New Job Posting › <span style={{ color: 'white' }}>Review Job Description</span>
+        <div className="review-container-new">
+            {/* ... component content ... */}
+            <header className="jd-header">
+                <div className="breadcrumbs">
+                    Dashboard  ›  New Job Posting  ›  <span style={{ color: 'white' }}>Review Job Description</span>
                 </div>
-                <h1 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '8px' }}>Review Job Description</h1>
-                <div style={{ color: '#94a3b8', fontSize: '14px' }}>Confirm the details below before saving the job posting.</div>
-            </div>
-
-            {/* Main Review Card */}
-            <div className="review-card" style={{
-                background: '#1e293b',
-                borderRadius: '16px',
-                border: '1px solid #334155',
-                padding: '32px',
-                position: 'relative',
-                width: '100%',
-                maxWidth: '800px',
-                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-            }}>
-
-                {/* Top Section: Summary & ATS */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px', borderBottom: '1px solid #334155', paddingBottom: '24px' }}>
-                    <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                            <h2 style={{ fontSize: '20px', fontWeight: '600', margin: 0 }}>Parsed Summary</h2>
-                            <span style={{ fontSize: '10px', background: 'rgba(34, 197, 94, 0.2)', color: '#4ade80', padding: '4px 8px', borderRadius: '4px', fontWeight: '600', letterSpacing: '0.5px' }}>READY TO SAVE</span>
-                        </div>
-                        <p style={{ color: '#94a3b8', fontSize: '13px', margin: 0 }}>Please verify the extracted information below.</p>
+                <div className="jd-title-row">
+                    <div className="jd-title">
+                        <h1>Review Job Description</h1>
+                        <div className="jd-subtitle">Confirm the details below before saving the job posting.</div>
                     </div>
+                    {/* Compact Step Tracker */}
+                    <div className="step-tracker-compact">
+                        <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: 600 }}>STEP 2 OF 4</span>
+                        <div style={{ width: '80px', height: '4px', background: '#334155', borderRadius: '2px', margin: '0 12px' }}>
+                            <div style={{ width: '50%', background: '#818cf8', height: '100%', borderRadius: '2px' }}></div>
+                        </div>
+                        <span style={{ background: '#312e81', color: '#818cf8', fontSize: '11px', padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>58%</span>
+                    </div>
+                </div>
+            </header>
 
-                    {/* ATS Circle */}
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '10px', color: '#94a3b8', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>ATS COMPATIBILITY</div>
-                        <div style={{
-                            background: '#0f172a',
-                            padding: '8px 16px',
-                            borderRadius: '12px',
-                            border: '1px solid #334155',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '12px'
-                        }}>
-                            <div style={{
-                                width: '40px', height: '40px',
-                                borderRadius: '50%',
-                                background: `conic-gradient(#818cf8 ${atsScore}%, #334155 0)`,
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                position: 'relative'
-                            }}>
-                                <div style={{
-                                    width: '32px', height: '32px',
-                                    background: '#0f172a',
-                                    borderRadius: '50%',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontSize: '11px', fontWeight: '700'
-                                }}>{atsScore}%</div>
+            <div className="review-main-card-new">
+                {/* LEFT CONTENT */}
+                <div className="review-content-section-new">
+                    <div className="content-header-new">
+                        <h2>Parsed Summary</h2>
+                        <span className="badge-ready-new">READY TO SAVE</span>
+                    </div>
+                    <p className="instruction-text-new">Please verify the extracted information below.</p>
+
+                    {/* Stacked Cards */}
+                    <div className="summary-cards-stack">
+                        {/* Role Card */}
+                        <div className="summary-card-new role-card">
+                            <div className="card-icon-new">
+                                <span className="material-icons">work</span>
                             </div>
-                            <div style={{ textAlign: 'left' }}>
-                                <div style={{ fontSize: '13px', fontWeight: '600', color: 'white' }}>Excellent</div>
-                                <div style={{ fontSize: '11px', color: '#94a3b8' }}>Score</div>
+                            <div className="card-content-new">
+                                <div className="card-label-new">ROLE</div>
+                                <div className="card-value-new">{data.role[0] || 'Not specified'}</div>
                             </div>
                         </div>
+
+                        {/* Location Card */}
+                        <div className="summary-card-new location-card">
+                            <div className="card-icon-new">
+                                <span className="material-icons">location_on</span>
+                            </div>
+                            <div className="card-content-new">
+                                <div className="card-label-new">LOCATION</div>
+                                <div className="card-value-new">{data.location[0] || 'Remote'}</div>
+                            </div>
+                        </div>
+
+                        {/* Skills Card */}
+                        <div className="summary-card-new skills-card">
+                            <div className="card-icon-new">
+                                <span className="material-icons">build</span>
+                            </div>
+                            <div className="card-content-new">
+                                <div className="card-label-new">SKILLS</div>
+                                <div className="card-value-new">{data.skills.join(', ') || 'Not specified'}</div>
+                            </div>
+                        </div>
+
+                        {/* Experience Card */}
+                        <div className="summary-card-new experience-card">
+                            <div className="card-icon-new">
+                                <span className="material-icons">trending_up</span>
+                            </div>
+                            <div className="card-content-new">
+                                <div className="card-label-new">EXPERIENCE</div>
+                                <div className="card-value-new">{data.experience[0] || 'Not specified'}</div>
+                            </div>
+                        </div>
+
+                        {/* Education Card */}
+                        {data.education && data.education.length > 0 && (
+                            <div className="summary-card-new education-card">
+                                <div className="card-icon-new">
+                                    <span className="material-icons">school</span>
+                                </div>
+                                <div className="card-content-new">
+                                    <div className="card-label-new">EDUCATION</div>
+                                    <div className="card-value-new">{data.education.join(', ')}</div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {/* Grid Details */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
-                    {/* Role */}
-                    <div className="review-field">
-                        <label style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>ROLE</label>
-                        <div style={{ background: '#0f172a', padding: '12px 16px', borderRadius: '8px', border: '1px solid #334155', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span className="material-icons" style={{ color: '#818cf8', fontSize: '18px' }}>work</span>
-                            <span style={{ fontSize: '14px', fontWeight: '500' }}>{roleDisplay}</span>
+                {/* RIGHT SIDE ATS & SAVE */}
+                <div className="review-sidebar-new">
+                    <div className="ats-card-new">
+                        <div className="ats-label-new">ATS COMPATIBILITY</div>
+                        <div className="ats-circle-wrapper-new">
+                            <svg viewBox="0 0 200 200" className="ats-circle-svg">
+                                <circle
+                                    cx="100"
+                                    cy="100"
+                                    r="80"
+                                    fill="none"
+                                    stroke="#2d3748"
+                                    strokeWidth="20"
+                                />
+                                <circle
+                                    cx="100"
+                                    cy="100"
+                                    r="80"
+                                    fill="none"
+                                    stroke="#818cf8"
+                                    strokeWidth="20"
+                                    strokeDasharray={`${(data.atsScore / 100) * 502.4} 502.4`}
+                                    strokeLinecap="round"
+                                    transform="rotate(-90 100 100)"
+                                />
+                            </svg>
+                            <div className="ats-score-text-new">
+                                <span className="score-val-new">{data.atsScore}<span className="percent-sign">%</span></span>
+                                <div className="score-status-new">Excellent Match</div>
+                            </div>
+                        </div>
+                        <div className="ats-dots">
+                            <span className="dot active"></span>
+                            <span className="dot"></span>
+                            <span className="dot"></span>
                         </div>
                     </div>
 
-                    {/* Location */}
-                    <div className="review-field">
-                        <label style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>LOCATION</label>
-                        <div style={{ background: '#0f172a', padding: '12px 16px', borderRadius: '8px', border: '1px solid #334155', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span className="material-icons" style={{ color: '#a855f7', fontSize: '18px' }}>place</span>
-                            <span style={{ fontSize: '14px', fontWeight: '500' }}>{locationDisplay}</span>
-                        </div>
-                    </div>
+                    <div className="save-action-area-new">
+                        <button className="btn-save-new" onClick={handleSaveClick}>
+                            <span className="material-icons">save</span>
+                            Save Description
+                        </button>
 
-                    {/* Experience */}
-                    <div className="review-field">
-                        <label style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>EXPERIENCE</label>
-                        <div style={{ background: '#0f172a', padding: '12px 16px', borderRadius: '8px', border: '1px solid #334155', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span className="material-icons" style={{ color: '#3b82f6', fontSize: '18px' }}>timeline</span>
-                            <span style={{ fontSize: '14px', fontWeight: '500' }}>{experienceRange.min} - {experienceRange.max} Yrs</span>
-                        </div>
-                    </div>
-
-                    {/* Job Type */}
-                    <div className="review-field">
-                        <label style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>JOB TYPE</label>
-                        <div style={{ background: '#0f172a', padding: '12px 16px', borderRadius: '8px', border: '1px solid #334155', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span className="material-icons" style={{ color: '#ec4899', fontSize: '18px' }}>schedule</span>
-                            <select
-                                value={selectedJobType}
-                                onChange={(e) => setSelectedJobType(e.target.value)}
-                                style={{
-                                    background: 'transparent',
-                                    border: 'none',
-                                    color: 'white',
-                                    fontSize: '14px',
-                                    fontWeight: '500',
-                                    outline: 'none',
-                                    cursor: 'pointer',
-                                    width: '100%'
-                                }}
-                            >
-                                <option value="Full-time" style={{ background: '#1e293b' }}>Full-time</option>
-                                <option value="Intern" style={{ background: '#1e293b' }}>Intern</option>
-                            </select>
-                        </div>
+                        <button className="btn-back-new" onClick={onEdit} style={{ marginTop: '12px' }}>
+                            <span className="material-icons">arrow_back</span> Back to Edit
+                        </button>
                     </div>
                 </div>
-
-                {/* Skills */}
-                <div className="review-field" style={{ marginBottom: '32px' }}>
-                    <label style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '12px' }}>SKILLS</label>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        {skillList.map(role => (
-                            <span key={role.id} style={{
-                                background: '#0f172a',
-                                border: '1px solid #1e40af', // Blue border
-                                padding: '6px 16px', // Slightly larger padding
-                                borderRadius: '6px',
-                                fontSize: '13px',
-                                fontWeight: '500',
-                                color: '#e2e8f0',
-                                boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)' // Blue shadow at edges
-                            }}>
-                                {role.label}
-                            </span>
-                        ))}
-                        <span
-                            onClick={onAddSkill}
-                            style={{
-                                border: '1px dashed #475569',
-                                padding: '6px 12px',
-                                borderRadius: '6px',
-                                fontSize: '13px',
-                                color: '#64748b',
-                                cursor: 'pointer'
-                            }}>+ Add</span>
-                    </div>
-                </div>
-
-                {/* Footer Actions */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '24px', borderTop: '1px solid #334155' }}>
-                    <button
-                        onClick={onEdit}
-                        style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
-                    >
-                        <span className="material-icons" style={{ fontSize: '16px' }}>arrow_back</span> Back to Edit
-                    </button>
-
-                    <button
-                        onClick={onSave}
-                        className="btn-primary"
-                        style={{ padding: '10px 24px', display: 'flex', alignItems: 'center', gap: '8px' }}
-                    >
-                        <span className="material-icons" style={{ fontSize: '18px' }}>save</span> Save Description
-                    </button>
-                </div>
-
             </div>
+
+            <div className="security-note-new">
+                <span className="material-icons">lock</span> Your job description is secure and private until published.
+            </div>
+
+            {/* DEMO MODE MODAL */}
+            {showModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <button className="modal-close-btn" onClick={() => setShowModal(false)}>
+                            <span className="material-icons">close</span>
+                        </button>
+                        <div className="modal-icon-box">
+                            <span className="material-icons">engineering</span>
+                        </div>
+                        <h2>🚧 Processing in Progress</h2>
+                        <p>This action is currently operating in UI demo mode without backend execution.</p>
+                        <p className="modal-subtext">Backend logic for this feature is under development and will be integrated as part of the implementation plan.</p>
+                        <div className="modal-info-box">
+                            <span className="material-icons">info</span>
+                            This preview is intended to demonstrate the final user workflow and experience.
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
